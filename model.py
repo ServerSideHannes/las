@@ -17,7 +17,6 @@ class attention(tf.keras.layers.Layer):
     
     self.dense_s = tf.keras.layers.Dense(self.dim)
     
-    
   def call(self, inputs):
     #Split inputs into attentions vectors and inputs from the LSTM output
     lstm_out = inputs[0]
