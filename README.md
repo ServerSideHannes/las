@@ -31,11 +31,11 @@ model.compile(loss="mse", optimizer="adam")
 
 # x_1 should have shape (Batch-size, timesteps, f_1)
 # "timesteps" is the width of the spectrogram.
-x_1 = mel_specdata
+x_1 = mel_specdata_img
 
 # x_2 should have shape (Batch-size, no_prev_tokens, No_tokens). 
 # "no_prev_tokens" is the of previously predicted tokens
-x_2 = one_hot_encoded_vector
+x_2 = one_hot_encoded_vectors
 
 model.predict(x=[x_1, x_2])
 ```
