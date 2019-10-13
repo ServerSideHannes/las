@@ -17,7 +17,7 @@ def LAS(dim, f_1, no_tokens):
   dim: Number of hidden neurons for most LSTM's.
   No_tokens: Number of unique tokens for input and output vector.
   f_1: pBLSTM takes (Batch, timesteps, f_1) as input, f_1 is number of features of the mel spectrogram per timestep. 
-  Timestep is the width of the spectrogram.
+    Timestep is the width of the spectrogram.
 """
 
 model = LAS(256, 512, 16)
