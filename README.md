@@ -5,8 +5,8 @@ Minimal tf 2.0 implementation of Listen, attend and spell (https://arxiv.org/abs
 Model architecture looks right to me. If you find an error in the code please dont hesitate to open an issue 😊
 
 #### ToDo:
-Implement data handing for easier training of model.
-Train on LibriSpeech 100h
++ Implement data handing for easier training of model.
++ Train on LibriSpeech 100h
 
 #### Usage
 The file model.py contains the architecture of the model. Example usage below.
