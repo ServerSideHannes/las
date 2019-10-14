@@ -1,12 +1,5 @@
 import tensorflow as tf
 import numpy as np
-import librosa
-import pandas as pd
-
-"""
-TODO:
-Add train generator support
-"""
 
 class attention(tf.keras.layers.Layer):
   def __init__(self, dim, debug=False):
