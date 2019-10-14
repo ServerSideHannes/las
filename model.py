@@ -2,12 +2,10 @@ import tensorflow as tf
 import numpy as np
 
 class attention(tf.keras.layers.Layer):
-  def __init__(self, dim, debug=False):
+  def __init__(self, dim):
     super(attention, self).__init__()
     
     self.dim = dim
-    self.debug = debug
-    
     self.dense_s = tf.keras.layers.Dense(self.dim)
     
   def call(self, inputs):
@@ -55,11 +53,10 @@ class att_rnn( tf.keras.layers.Layer):
     return r[0], [r[0], c]
 
 class pBLSTM(tf.keras.layers.Layer):
-  def __init__(self, dim, debug = False):
+  def __init__(self, dim):
     super(pBLSTM, self).__init__()
     
     self.dim = dim
-
     self.LSTM = tf.keras.layers.LSTM(self.dim, return_sequences=True)
     self.bidi_LSTM = tf.keras.layers.Bidirectional(self.LSTM)
     
