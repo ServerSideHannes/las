@@ -35,7 +35,8 @@ model.compile(loss="mse", optimizer="adam")
 x_1 = mel_specdata_img
 
 # x_2 should have shape (Batch-size, no_prev_tokens, No_tokens). 
-# "no_prev_tokens" is the of previously predicted tokens
+# "no_prev_tokens" is the number of previously predicted tokens,
+# I.E the model will predict the no_prev_tokens+1:th token.
 x_2 = one_hot_encoded_vectors
 
 model.predict(x=[x_1, x_2])
