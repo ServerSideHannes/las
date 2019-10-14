@@ -7,7 +7,7 @@ Minimal tf 2.0 implementation of Listen, attend and spell (https://arxiv.org/abs
 #### ToDo:
 + [ ] Implement data handing for easier training of model.
 + [ ] Train on LibriSpeech 100h
-+ [ ] Implement specAugment features (SOTA LibriSpeech) (https://arxiv.org/abs/1904.08779)
++ [ ] Implement specAugment features (prev SOTA LibriSpeech) (https://arxiv.org/abs/1904.08779)
 
 #### Usage
 The file model.py contains the architecture of the model. Example usage below.
