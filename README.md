@@ -31,7 +31,7 @@ model = LAS(256, 512, 16)
 model.compile(loss="mse", optimizer="adam")
 
 # x_1 should have shape (Batch-size, timesteps, f_1)
-x_1 = np.random.random((1, 550, 128))
+x_1 = np.random.random((1, 550, 256))
 
 # x_2 should have shape (Batch-size, no_prev_tokens, No_tokens). 
 x_2 = np.random.random((1, 12, 16))
