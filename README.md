@@ -23,12 +23,6 @@ def LAS(dim, f_1, no_tokens):
 
 model = LAS(256, 512, 16)
 model.compile(loss="mse", optimizer="adam")
-```
-Example of model.predict()
-```python
-...
-model = LAS(256, 512, 16)
-model.compile(loss="mse", optimizer="adam")
 
 # x_1 should have shape (Batch-size, timesteps, f_1)
 x_1 = np.random.random((1, 550, 256))
