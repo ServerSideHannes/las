@@ -44,11 +44,11 @@ class att_rnn( tf.keras.layers.Layer):
   def call(self, inputs, states, constants):
     constants = tf.squeeze(constants, axis=0)
 
-    r = self.rnn(inputs=inputs, states=states)[1]
-    r = self.rnn2(inputs=r[0], states=[r[0], r[1]])[1]
+    r         = self.rnn(inputs=inputs, states=states)[1]
+    r         = self.rnn2(inputs=r[0], states=[r[0], r[1]])[1]
     
-    c = self.attention_cell([r[0], constants])
-    c = tf.add(r[1], c)
+    c         = self.attention_cell([r[0], constants])
+    c         = tf.add(r[1], c)
     
     return r[0], [r[0], c]
 
