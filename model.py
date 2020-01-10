@@ -10,7 +10,7 @@ class attention(tf.keras.layers.Layer):
     
   def call(self, inputs):
     #Split inputs into attentions vectors and inputs from the LSTM output
-    lstm_out = inputs[0]
+    lstm_out      = inputs[0]
     attention_vec = inputs[1]
     
     #Linear FC
@@ -34,12 +34,12 @@ class attention(tf.keras.layers.Layer):
 class att_rnn( tf.keras.layers.Layer):
   def __init__(self, units,):
     super(att_rnn, self).__init__()
-    self.units = units
+    self.units      = units
     self.state_size = [self.units, self.units]
     
     self.attention_cell = attention(self.units)
-    self.rnn = tf.keras.layers.LSTMCell(self.units)
-    self.rnn2 = tf.keras.layers.LSTMCell(self.units)
+    self.rnn            = tf.keras.layers.LSTMCell(self.units)
+    self.rnn2           = tf.keras.layers.LSTMCell(self.units)
     
   def call(self, inputs, states, constants):
     constants = tf.squeeze(constants, axis=0)
@@ -56,9 +56,9 @@ class pBLSTM(tf.keras.layers.Layer):
   def __init__(self, dim):
     super(pBLSTM, self).__init__()
     
-    self.dim = dim
-    self.LSTM = tf.keras.layers.LSTM(self.dim, return_sequences=True)
-    self.bidi_LSTM = tf.keras.layers.Bidirectional(self.LSTM)
+    self.dim        = dim
+    self.LSTM       = tf.keras.layers.LSTM(self.dim, return_sequences=True)
+    self.bidi_LSTM  = tf.keras.layers.Bidirectional(self.LSTM)
     
   @tf.function
   def call(self, inputs):
