@@ -1,6 +1,6 @@
 # Listen, attend and spell
 Minimal tf 2.0 implementation of Listen, attend and spell (https://arxiv.org/abs/1508.01211).
-To better understand naming of the models variables please see the paper above.
+To get a better understanding of the naming of the models variables please see the paper above.
 
 #### Done:
 + [x] Model architecture looks right to me. If you find an error in the code please dont hesitate to open an issue 😊
