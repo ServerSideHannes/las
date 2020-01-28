@@ -76,14 +76,15 @@ def LAS(dim, f_1, no_tokens):
   input_1 = tf.keras.Input(shape=(None, f_1))
   input_2 = tf.keras.Input(shape=(None, no_tokens))
   
-  #Lower resoultion by 8x
-  #dim/2 is used since blstm use concat and therefore would return dim*2. It just looked cleaner to me.
-  
+  #Listen; Lower resoultion by 8x
   x = pBLSTM( int(dim/2) )(input_1)
   x = pBLSTM( int(dim/2) )(x)
   x = pBLSTM( int(dim/2) )(x)
   
+  #Attend
   x = tf.keras.layers.RNN(att_rnn(dim), return_sequences=True)(input_2, constants=x)
+  
+  #Spell
   x = tf.keras.layers.Dense(dim, activation="relu")(x)
   x = tf.keras.layers.Dense(no_tokens, activation="softmax")(x)
 
