@@ -62,7 +62,7 @@ class pBLSTM(tf.keras.layers.Layer):
     self.LSTM       = tf.keras.layers.LSTM(self.dim, return_sequences=True)
     self.bidi_LSTM  = tf.keras.layers.Bidirectional(self.LSTM)
     
-  #tf.function
+  @tf.function
   def call(self, inputs):
     y = self.bidi_LSTM(inputs)
     
