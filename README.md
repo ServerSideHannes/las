@@ -9,7 +9,6 @@ To get a better understanding of the naming of the models variables please see t
 + [ ] Implement data handing for easier training of model.
 + [ ] Train on LibriSpeech 100h
 + [ ] Implement specAugment features (prev SOTA LibriSpeech) (https://arxiv.org/abs/1904.08779)
-+ [ ] Currently cant throw .fit at the model, must fix this. Right now I recomend using tf.GradientTape
 #### Usage
 The file model.py contains the architecture of the model. Example usage below.
 
@@ -34,5 +33,5 @@ x_2 = np.random.random((1, 12, 16))
 # By passing x_1 and x_2 the model will predict the 12th token 
 # given by the spectogram and the prev predicted tokens
 
-model([x_1, x_2])
+model.predict([x_1, x_2])
 ```
