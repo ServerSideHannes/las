@@ -17,12 +17,12 @@ The file model.py contains the architecture of the model. Example usage below.
 """
 def LAS(dim, f_1, no_tokens):
   dim: Number of hidden neurons for most LSTM's.
-  No_tokens: Number of unique tokens for input and output vector.
   f_1: pBLSTM takes (Batch, timesteps, f_1) as input, f_1 is number of features of the mel spectrogram 
        per timestep. Timestep is the width of the spectrogram.
+  No_tokens: Number of unique tokens for input and output vector.
 """
 
-model = LAS(256, 512, 16)
+model = LAS(256, 256, 16)
 model.compile(loss="mse", optimizer="adam")
 
 # x_1 should have shape (Batch-size, timesteps, f_1)
