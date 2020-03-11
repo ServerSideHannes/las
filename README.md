@@ -34,5 +34,5 @@ x_2 = np.random.random((1, 12, 16))
 # By passing x_1 and x_2 the model will predict the 12th token 
 # given by the spectogram and the prev predicted tokens
 
-model.predict(x=[x_1, x_2])
+model(x=[x_1, x_2])
 ```
