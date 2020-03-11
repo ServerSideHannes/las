@@ -9,7 +9,7 @@ To get a better understanding of the naming of the models variables please see t
 + [ ] Implement data handing for easier training of model.
 + [ ] Train on LibriSpeech 100h
 + [ ] Implement specAugment features (prev SOTA LibriSpeech) (https://arxiv.org/abs/1904.08779)
-+ [ ] Currently cant throw .fit at the model, must fix this
++ [ ] Currently cant throw .fit at the model, must fix this. Right now I recomend using tf.GradientTape
 #### Usage
 The file model.py contains the architecture of the model. Example usage below.
 
