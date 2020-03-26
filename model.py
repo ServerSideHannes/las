@@ -91,5 +91,5 @@ def LAS(dim, f_1, no_tokens):
   model = tf.keras.Model(inputs=[input_1,input_2], outputs=x)
   return model
 
-model = LAS(256, 512, 16)
+model = LAS(256, 256, 16)
 model.compile(loss="mse", optimizer="adam")
