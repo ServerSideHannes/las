@@ -27,8 +27,10 @@ model.compile(loss="mse", optimizer="adam")
 # x_1 should have shape (Batch-size, timesteps, f_1)
 x_1 = np.random.random((1, 550, 256))
 
-# x_2 should have shape (Batch-size, no_prev_tokens, No_tokens). 
-x_2 = np.random.random((1, 12, 16))
+# x_2 should have shape (Batch-size, no_prev_tokens, No_tokens). The token vector should be one-hot encoded.
+x_2 = np.zeros((1,12,16))
+for n in range(12):
+  x_2[0, n, np.random.randint(1, 16)] = 1
 
 # By passing x_1 and x_2 the model will predict the 12th token 
 # given by the spectogram and the prev predicted tokens
