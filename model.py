@@ -77,9 +77,9 @@ def LAS(dim, f_1, no_tokens):
   input_2 = tf.keras.Input(shape=(None, no_tokens))
   
   #Listen; Lower resoultion by 8x
-  x = pBLSTM( int(dim/2) )(input_1)
-  x = pBLSTM( int(dim/2) )(x)
-  x = pBLSTM( int(dim/2) )(x)
+  x = pBLSTM( dim//2 )(input_1)
+  x = pBLSTM( dim//2 )(x)
+  x = pBLSTM( dim//2 )(x)
   
   #Attend
   x = tf.keras.layers.RNN(att_rnn(dim), return_sequences=True)(input_2, constants=x)
