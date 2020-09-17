@@ -19,8 +19,8 @@ class attention(tf.keras.layers.Layer):
     h_psi  = self.dense_h(h) # (..., seq_len, F)
     
     # Linear blendning < φ(s_i), ψ(h_u) >
-    # Forced seq_len of 1 since s should always be a single vector
-    e = tf.matmul(s_fi*h_psi, transpose_b=True) # (..., 1, B)
+    # Forced seq_len of 1 since s should always be a single vector per batch
+    e = tf.matmul(s_fi*h_psi, transpose_b=True) # (..., 1, F)
     
     # Softmax vector
     alpha = tf.nn.softmax(e) # (..., 1, N)
@@ -42,15 +42,16 @@ class att_rnn( tf.keras.layers.Layer):
     self.rnn2               = tf.keras.layers.LSTMCell(self.units)
     
   def call(self, inputs, states, constants):
+    #
     h       = tf.squeeze(constants, axis=0)
 
-    s       = self.rnn(inputs=inputs, states=states)
-    s       = self.rnn2(inputs=s[0], states=s[1])[1]
+    s       = self.rnn(inputs=inputs, states=states) # [(..., F), [(..., F), (..., F)]]
+    s       = self.rnn2(inputs=s[0], states=s[1])[1] # [(..., F), (..., F)]
 
     c       = self.attention_context([s[0], h]) # (..., F)
     out     = tf.keras.layers.concatenate([s[0], c], axis=-1) # (..., F*2)
     
-    return out, [s[0], c]
+    return out, [c, s[1]]
 
 class pBLSTM(tf.keras.layers.Layer):
   def __init__(self, dim):
@@ -75,16 +76,16 @@ def LAS(dim, f_1, no_tokens):
   input_2 = tf.keras.Input(shape=(None, no_tokens))
   
   #Listen; Lower resoultion by 8x
-  x = pBLSTM( dim//2 )(input_1)
-  x = pBLSTM( dim//2 )(x)
-  x = pBLSTM( dim//2 )(x)
+  x = pBLSTM( dim//2 )(input_1) # (..., audio_len//2, dim)
+  x = pBLSTM( dim//2 )(x) # (..., audio_len//4, dim)
+  x = pBLSTM( dim//2 )(x) # (..., audio_len//8, dim)
   
   #Attend
-  x = tf.keras.layers.RNN(att_rnn(dim), return_sequences=True)(input_2, constants=x)
+  x = tf.keras.layers.RNN(att_rnn(dim), return_sequences=True)(input_2, constants=x) # (..., seq_len, dim*2)
   
   #Spell
-  x = tf.keras.layers.Dense(dim, activation="relu")(x)
-  x = tf.keras.layers.Dense(no_tokens, activation="softmax")(x)
+  x = tf.keras.layers.Dense(dim, activation="relu")(x) # (..., seq_len, dim)
+  x = tf.keras.layers.Dense(no_tokens, activation="softmax")(x) # (..., seq_len, no_tokens)
 
   model = tf.keras.Model(inputs=[input_1, input_2], outputs=x)
   return model
