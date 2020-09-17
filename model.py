@@ -11,22 +11,23 @@ class attention(tf.keras.layers.Layer):
     
   def call(self, inputs):
     # Split inputs into attentions vectors and inputs from the LSTM output
-    s     = inputs[0] # (..., s_depth)
-    h     = inputs[1] # (..., seq_len, h_depth)
+    s     = inputs[0] # (..., depth_s)
+    h     = inputs[1] # (..., seq_len, depth_h)
     
     # Linear FC
     s_fi   = self.dense_s(s) # (..., F)
     h_psi  = self.dense_h(h) # (..., seq_len, F)
     
     # Linear blendning < φ(s_i), ψ(h_u) >
+    # Forced seq_len of 1 since s should always be a single vector
     e = tf.matmul(s_fi*h_psi, transpose_b=True) # (..., 1, B)
     
     # Softmax vector
     alpha = tf.nn.softmax(e) # (..., 1, N)
 
     # Context vector
-    c = tf.matmul(alpha*h) # (..., 1, F)
-    c = tf.squeeze(c, 1) # (..., F)
+    c = tf.matmul(alpha, h) # (..., 1, depth_h)
+    c = tf.squeeze(c, 1) # (..., depth_h)
     
     return c
 
@@ -63,7 +64,7 @@ class pBLSTM(tf.keras.layers.Layer):
   def call(self, inputs):
     y = self.bidi_LSTM(inputs) # (..., seq_len, F)
     
-    if( tf.shape(inputs)[1] % 2 == 1):
+    if tf.shape(inputs)[1] % 2 == 1:
       y = tf.keras.layers.ZeroPadding1D(padding=(0, 1))(y)
 
     y = tf.keras.layers.Reshape(target_shape=(-1, int(self.dim*4)))(y) # (..., seq_len//2, F*2)
@@ -85,7 +86,7 @@ def LAS(dim, f_1, no_tokens):
   x = tf.keras.layers.Dense(dim, activation="relu")(x)
   x = tf.keras.layers.Dense(no_tokens, activation="softmax")(x)
 
-  model = tf.keras.Model(inputs=[input_1,input_2], outputs=x)
+  model = tf.keras.Model(inputs=[input_1, input_2], outputs=x)
   return model
 
 model = LAS(256, 256, 16)
