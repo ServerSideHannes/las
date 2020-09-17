@@ -11,6 +11,7 @@ class attention(tf.keras.layers.Layer):
     
   def call(self, inputs):
     #Split inputs into attentions vectors and inputs from the LSTM output
+    #s should have length 1.
     s     = inputs[0]
     h     = inputs[1]
     
@@ -18,18 +19,18 @@ class attention(tf.keras.layers.Layer):
     s_fi   = self.dense_s(s)
     h_psi  = self.dense_h(h)
     
-    #Linear blendning < φ(s_i), ψ(h_u) >, Shape: (B, N)
-    e = tf.reduce_sum(s_fi*h_psi, -1)
+    #Linear blendning < φ(s_i), ψ(h_u) >, Shape: (B, 1, N)
+    e = tf.matmul(s_fi*h_psi, transpose_b=True)
     
-    #Shape: (B, N, 1)
-    e = tf.expand_dims(e, -1)
+    #softmax_vector, Shape: (B, 1, N)
+    alpha = tf.nn.softmax(e)
+
+    #Wheighted vector fetures, Shape: (B, 1, F)
+    c = tf.matmul(alpha*h)
     
-    #softmax_vector, Shape: (B, N, 1)
-    alpha = tf.nn.softmax(e, -2)
-
-    #Wheighted vector fetures, Shape: (B, F)
-    c = tf.reduce_sum(alpha*h, -2)
-
+    #Shape: (B, F)
+    c = tf.squeeze(c, 1)
+    
     return c
 
 class att_rnn( tf.keras.layers.Layer):
