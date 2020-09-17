@@ -28,7 +28,7 @@ class attention(tf.keras.layers.Layer):
     alpha = tf.nn.softmax(e, -2)
 
     #Wheighted vector fetures, Shape: (B, F)
-    c = tf.reduce_sum(alpha*b, -2)
+    c = tf.reduce_sum(alpha*h, -2)
 
     return c
 
