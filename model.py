@@ -11,7 +11,7 @@ class attention(tf.keras.layers.Layer):
     
   def call(self, inputs):
     #Split inputs into attentions vectors and inputs from the LSTM output
-    #s should have length 1.
+    #s should be a single vector per batch.
     s     = inputs[0]
     h     = inputs[1]
     
