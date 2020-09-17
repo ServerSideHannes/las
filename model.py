@@ -20,7 +20,7 @@ class attention(tf.keras.layers.Layer):
     
     # Linear blendning < φ(s_i), ψ(h_u) >
     # Forced seq_len of 1 since s should always be a single vector per batch
-    e = tf.matmul(s_fi, h_psi, transpose_b=True) # (..., 1, F)
+    e = tf.matmul(s_fi, h_psi, transpose_b=True) # (..., 1, N)
     
     # Softmax vector
     alpha = tf.nn.softmax(e) # (..., 1, N)
