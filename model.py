@@ -15,20 +15,20 @@ class attention(tf.keras.layers.Layer):
     h     = inputs[1]
     
     #Linear FC
-    s     = self.dense_s(s)
-    h     = self.dense_h(h)
+    s_fi   = self.dense_s(s)
+    h_psi  = self.dense_h(h)
     
-    #Linear blendning
-    alpha = tf.keras.backend.expand_dims(s)
-    alpha = tf.matmul(h, alpha)
-    alpha = tf.keras.backend.squeeze(alpha, axis=-1)
+    #Linear blendning <hφ(s_i), ψ(h_u)i> 
+    e = tf.keras.backend.expand_dims(s_fi)
+    e = tf.matmul(h_psi, e)
+    e = tf.keras.backend.squeeze(e, axis=-1)
 
     #softmax_vector
-    softmaxed = tf.nn.softmax(alpha, axis=-1)
-    softmaxed = tf.keras.backend.expand_dims(softmaxed, axis=-2)
+    alpha = tf.nn.softmax(e, axis=-1)
+    alpha = tf.keras.backend.expand_dims(alpha, axis=-2)
 
     #Wheighted vector fetures
-    c = tf.matmul(softmaxed, h)
+    c = tf.matmul(alpha, h)
     c = tf.keras.backend.squeeze(c, axis=-2)
 
     return c
