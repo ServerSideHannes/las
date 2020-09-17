@@ -14,22 +14,21 @@ class attention(tf.keras.layers.Layer):
     s     = inputs[0]
     h     = inputs[1]
     
-    #Linear FC
+    #Linear FC, Shape: s_fi=(B, F), h_psi=(B, N, F)
     s_fi   = self.dense_s(s)
     h_psi  = self.dense_h(h)
     
-    #Linear blendning <hφ(s_i), ψ(h_u)i> 
-    e = tf.keras.backend.expand_dims(s_fi)
-    e = tf.matmul(h_psi, e)
-    e = tf.keras.backend.squeeze(e, axis=-1)
+    #Linear blendning < φ(s_i), ψ(h_u) >, Shape: (B, N)
+    e = tf.reduce_sum(s_fi*h_psi, -1)
+    
+    #Shape: (B, N, 1)
+    e = tf.expand_dims(e, -1)
+    
+    #softmax_vector, Shape: (B, N, 1)
+    alpha = tf.nn.softmax(e, -2)
 
-    #softmax_vector
-    alpha = tf.nn.softmax(e, axis=-1)
-    alpha = tf.keras.backend.expand_dims(alpha, axis=-2)
-
-    #Wheighted vector fetures
-    c = tf.matmul(alpha, h)
-    c = tf.keras.backend.squeeze(c, axis=-2)
+    #Wheighted vector fetures, Shape: (B, F)
+    c = tf.reduce_sum(alpha*b, -2)
 
     return c
 
