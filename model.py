@@ -20,7 +20,7 @@ class attention(tf.keras.layers.Layer):
     
     # Linear blendning < φ(s_i), ψ(h_u) >
     # Forced seq_len of 1 since s should always be a single vector per batch
-    e = tf.matmul(s_fi*h_psi, transpose_b=True) # (..., 1, F)
+    e = tf.matmul(s_fi, h_psi, transpose_b=True) # (..., 1, F)
     
     # Softmax vector
     alpha = tf.nn.softmax(e) # (..., 1, N)
@@ -76,9 +76,9 @@ def LAS(dim, f_1, no_tokens):
   input_2 = tf.keras.Input(shape=(None, no_tokens))
   
   #Listen; Lower resoultion by 8x
-  x = pBLSTM( dim//2 )(input_1) # (..., audio_len//2, dim)
-  x = pBLSTM( dim//2 )(x) # (..., audio_len//4, dim)
-  x = pBLSTM( dim//2 )(x) # (..., audio_len//8, dim)
+  x = pBLSTM( dim//2 )(input_1) # (..., audio_len//2, dim*2)
+  x = pBLSTM( dim//2 )(x) # (..., audio_len//4, dim*2)
+  x = pBLSTM( dim//4 )(x) # (..., audio_len//8, dim)
   
   #Attend
   x = tf.keras.layers.RNN(att_rnn(dim), return_sequences=True)(input_2, constants=x) # (..., seq_len, dim*2)
