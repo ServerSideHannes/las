@@ -63,12 +63,12 @@ class pBLSTM(tf.keras.layers.Layer):
     
   @tf.function
   def call(self, inputs):
-    y = self.bidi_LSTM(inputs) # (..., seq_len, F)
+    y = self.bidi_LSTM(inputs) # (..., seq_len, 2*dim)
     
     if tf.shape(inputs)[1] % 2 == 1:
       y = tf.keras.layers.ZeroPadding1D(padding=(0, 1))(y)
 
-    y = tf.keras.layers.Reshape(target_shape=(-1, int(self.dim*4)))(y) # (..., seq_len//2, F*2)
+    y = tf.keras.layers.Reshape(target_shape=(-1, int(self.dim*4)))(y) # (..., seq_len//2, 4*dim)
     return y
 
 def LAS(dim, f_1, no_tokens):
